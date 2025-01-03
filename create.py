@@ -33,6 +33,16 @@ def parse_create_table(query):
     
     return table_info
 
+def parse_create_db(query):
+    parsed = sqlparse.parse(query)[0]  
+    tokens = [token for token in parsed.tokens if not token.is_whitespace]
+    info = {"db_name": None}
+    if parsed.get_type() == "CREATE" and tokens[1].value.upper() == "DATABASE":
+        info['db_name'] = tokens[2].value  
+
+    return info
+    
+
 # Example usage
 
 if __name__ == '__main__':
@@ -47,3 +57,4 @@ if __name__ == '__main__':
 
     result = parse_create_table(query)
     print(json.dumps(result, indent=1))
+    print(parse_create_db("CREATE DATABASE databasename;"))
