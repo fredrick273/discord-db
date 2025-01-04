@@ -37,7 +37,7 @@ async def on_ready():
         print("Connected to",info['db_name'],'Database')
     while True:
         print("Enter queries:")
-        print("> ")
+        print("> ",end=" ")
         query = input()
         await process_query(query,client)
 

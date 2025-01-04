@@ -43,6 +43,12 @@ async def process_query(query, client):
             print(f"Table created successfully: {table_info}")
         else:
             print("Unsupported CREATE statement.")
+    elif parsed.get_type() == "DROP":
+        if tokens[1].value.upper() == "DATABASE":
+            for channel in client.get_guild(GUILD).channels:
+                await channel.delete()
+            print("Database droped")
+
     else:
         print("No other query type supported as of now.")
 
@@ -51,7 +57,7 @@ def create_db_header(query):
     info = create.parse_create_db(query)
 
     header = {
-        "db_name": info['db_name'],
+        "db_name": info['db_name'].upper(),
         "version": 1,
         "num_tables": 0,
         "creation_time": str(time.time())
